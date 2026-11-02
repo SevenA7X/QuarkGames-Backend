@@ -94,6 +94,8 @@ public class JuegoService {
         dto.setTitulo(juego.getTitulo());
         dto.setPrecio(juego.getPrecio());
         dto.setDescripcion(juego.getDescripcion());
+        dto.setStock(juego.getStock());
+        dto.setImagen(juego.getImagen());
         
         // Mapeo de la relación usando el ID para el DTO
         if (juego.getCategoria() != null) {
@@ -108,6 +110,8 @@ public class JuegoService {
         juego.setTitulo(dto.getTitulo());
         juego.setPrecio(dto.getPrecio());
         juego.setDescripcion(dto.getDescripcion());
+        juego.setStock(dto.getStock());
+        juego.setImagen(dto.getImagen());
         
         // Reconstrucción de la relación para JPA
         if (dto.getCategoriaId() != null) {

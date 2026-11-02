@@ -26,4 +26,11 @@ public class JuegoDTO extends RepresentationModel<JuegoDTO> {
     // Se recomienda usar el ID para vincular en el DTO de creación
     @NotNull(message = "El ID de la categoría es obligatorio")
     private Long categoriaId;
+
+    @NotNull(message = "El stock es obligatorio")
+    @PositiveOrZero(message = "El stock no puede ser negativo")
+    private Integer stock;
+
+    @NotBlank(message = "La imagen no puede estar vacía")
+    private String imagen;
 }

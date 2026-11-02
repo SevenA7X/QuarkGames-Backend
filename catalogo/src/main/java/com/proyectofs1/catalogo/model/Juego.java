@@ -27,4 +27,10 @@ public class Juego {
 
     @Column(nullable = false, length = 250)
     private String descripcion;
+    
+    @Column(nullable = false)
+    private Integer stock;
+
+    @Column(nullable = false)
+    private String imagen;
 }
