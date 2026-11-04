@@ -23,14 +23,20 @@ public class Juego {
     private Categoria categoria;
     
     @Column(nullable = false)
+    private String plataforma;
+
+    @Column(nullable = false)
     private double precio;
 
     @Column(nullable = false, length = 250)
     private String descripcion;
-    
+
     @Column(nullable = false)
     private Integer stock;
 
     @Column(nullable = false)
     private String imagen;
+
+    
+    
 }

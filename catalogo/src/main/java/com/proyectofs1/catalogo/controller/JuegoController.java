@@ -52,8 +52,7 @@ public class JuegoController {
     public ResponseEntity<JuegoDTO> findById(@PathVariable Long id) {
         JuegoDTO juegoDTO = juegoService.findById(id);
         
-        // Se elimina el try-catch. 
-        // Retorna 200 OK si existe, 404 Not Found si es nulo.
+      
         if (juegoDTO != null) {
             // Integración HATEOAS: Enlace a sí mismo y hacia la colección completa
             juegoDTO.add(linkTo(methodOn(JuegoController.class).findById(id)).withSelfRel());

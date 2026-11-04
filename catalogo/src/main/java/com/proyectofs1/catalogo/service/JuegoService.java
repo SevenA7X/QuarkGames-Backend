@@ -84,8 +84,6 @@ public class JuegoService {
                 .collect(Collectors.toList());
     } */
     
-    
-
     // --- Métodos Privados de Mapeo ---
     
     private JuegoDTO convertToDTO(Juego juego) {
@@ -96,10 +94,17 @@ public class JuegoService {
         dto.setDescripcion(juego.getDescripcion());
         dto.setStock(juego.getStock());
         dto.setImagen(juego.getImagen());
+        dto.setPlataforma(juego.getPlataforma());
         
-        // Mapeo de la relación usando el ID para el DTO
         if (juego.getCategoria() != null) {
+            // Mantiene compatibilidad de guardado
             dto.setCategoriaId(juego.getCategoria().getId());
+            
+            // Construye el DTO anidado para devolver el nombre a React
+            com.proyectofs1.catalogo.dto.CategoriaDTO catDto = new com.proyectofs1.catalogo.dto.CategoriaDTO();
+            catDto.setId(juego.getCategoria().getId());
+            catDto.setNombre(juego.getCategoria().getNombre());
+            dto.setCategoria(catDto);
         }
         return dto;
     }
@@ -112,6 +117,7 @@ public class JuegoService {
         juego.setDescripcion(dto.getDescripcion());
         juego.setStock(dto.getStock());
         juego.setImagen(dto.getImagen());
+        juego.setPlataforma(dto.getPlataforma());
         
         // Reconstrucción de la relación para JPA
         if (dto.getCategoriaId() != null) {
