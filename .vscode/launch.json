@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "AuthApplication",
+            "request": "launch",
+            "mainClass": "com.proyectofs1.auth.AuthApplication",
+            "projectName": "auth"
+        },
+        {
+            "type": "java",
             "name": "Spring Boot-CatalogoApplication<catalogo>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
