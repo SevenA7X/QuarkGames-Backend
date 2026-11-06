@@ -13,6 +13,8 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import com.proyectofs1.auth.dto.ErrorDTO;
 
@@ -46,6 +48,20 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CredencialesInvalidasException.class)
     public ResponseEntity<ErrorDTO> manejarCredenciales(CredencialesInvalidasException ex) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorDTO(401, ex.getMessage()));
+    }
+
+        // 404: la ruta no existe (ej.: /api/v1/auth/no-existe)
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<ErrorDTO> manejarRutaInexistente(NoResourceFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErrorDTO(404, "El recurso solicitado no existe."));
+    }
+
+    // 405: la ruta existe pero con otro método HTTP (ej.: GET a /login, que es POST)
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<ErrorDTO> manejarMetodoNoPermitido(HttpRequestMethodNotSupportedException ex) {
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED)
+                .body(new ErrorDTO(405, "Método HTTP no permitido para esta ruta."));
     }
 
     // 500: cualquier otro error no controlado. No exponemos detalles internos al cliente.
