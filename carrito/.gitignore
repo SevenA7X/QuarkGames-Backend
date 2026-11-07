@@ -1,0 +1,11 @@
+# Compilados de Maven (se generan con "mvn package" / "mvn test")
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
