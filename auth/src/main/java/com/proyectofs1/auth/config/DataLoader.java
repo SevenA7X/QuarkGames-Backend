@@ -11,7 +11,6 @@ import com.proyectofs1.auth.model.Administrador;
 import com.proyectofs1.auth.repository.AdministradorRepository;
 
 // Se ejecuta una vez al arrancar. Crea el admin inicial con la clave encriptada.
-// No usamos data.sql porque ahí habría que escribir el hash BCrypt a mano.
 @Component
 public class DataLoader implements CommandLineRunner {
 
@@ -34,7 +33,6 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        // Idempotente: si ya existe (por ddl-auto=update), no lo duplica
         if (repository.existsByUsuario(usuarioAdmin)) {
             log.info("El administrador '{}' ya existe. No se crea de nuevo.", usuarioAdmin);
             return;
