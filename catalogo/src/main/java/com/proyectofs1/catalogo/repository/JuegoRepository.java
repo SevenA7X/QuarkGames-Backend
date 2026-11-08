@@ -3,6 +3,7 @@ package com.proyectofs1.catalogo.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -24,6 +25,14 @@ public interface JuegoRepository extends JpaRepository<Juego, Long> {
     // 4. Consulta JPQL corregida: Se cambia "j.genero" por "j.categoria.nombre"
     @Query("SELECT j FROM Juego j WHERE j.categoria.nombre = :genero AND j.precio <= :precioMaximo")
     List<Juego> buscarPorGeneroYPrecioMaximo(@Param("genero") String genero, @Param("precioMaximo") double precioMaximo);
+
+    // 5. Descuento ATÓMICO de stock (lo usa el MS Carrito al comprar).
+    //    La condición "stock >= :cantidad" va dentro del mismo UPDATE: si dos compras llegan
+    //    al mismo tiempo, la base de datos garantiza que el stock nunca quede negativo.
+    //    Devuelve cuántas filas cambió: 1 = descontado, 0 = no alcanzaba el stock.
+    @Modifying
+    @Query("UPDATE Juego j SET j.stock = j.stock - :cantidad WHERE j.id = :id AND j.stock >= :cantidad")
+    int descontarStock(@Param("id") Long id, @Param("cantidad") int cantidad);
 
     
 }

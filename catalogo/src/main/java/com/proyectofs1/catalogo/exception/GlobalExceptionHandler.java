@@ -31,6 +31,26 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
     }
 
+    // 404: juego inexistente al descontar stock
+    @ExceptionHandler(JuegoNoEncontradoException.class)
+    public ResponseEntity<Map<String, Object>> handleJuegoNoEncontrado(JuegoNoEncontradoException ex) {
+        log.warn(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("status", 404, "mensaje", ex.getMessage()));
+    }
+
+    // 403: llamada a /internal/ sin la clave correcta
+    @ExceptionHandler(AccesoInternoDenegadoException.class)
+    public ResponseEntity<Map<String, Object>> handleAccesoInterno(AccesoInternoDenegadoException ex) {
+        log.warn("Intento de acceso a endpoint interno con clave inválida");
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("status", 403, "mensaje", ex.getMessage()));
+    }
+
+    // 409: no alcanza el stock al descontar
+    @ExceptionHandler(StockInsuficienteException.class)
+    public ResponseEntity<Map<String, Object>> handleStockInsuficiente(StockInsuficienteException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("status", 409, "mensaje", ex.getMessage()));
+    }
+
     // Manejo genérico para excepciones no controladas
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleGeneralExceptions(Exception ex) {

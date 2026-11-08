@@ -10,7 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.proyectofs1.catalogo.model.Juego;
+import com.proyectofs1.catalogo.dto.ItemStockDTO;
 import com.proyectofs1.catalogo.dto.JuegoDTO;
+import com.proyectofs1.catalogo.exception.JuegoNoEncontradoException;
+import com.proyectofs1.catalogo.exception.StockInsuficienteException;
 import com.proyectofs1.catalogo.repository.JuegoRepository;
 
 import jakarta.transaction.Transactional;
@@ -75,6 +78,35 @@ public class JuegoService {
         return juegoRepository.findByPrecioLessThanEqual(precioMaximo).stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
+    }
+
+    // Descuenta el stock de VARIOS juegos en una sola transacción (lo llama el MS Carrito al comprar).
+    // Si un solo juego falla, se lanza una excepción y @Transactional hace ROLLBACK de todo:
+    // nunca queda una compra "a medias".
+    public void descontarStock(List<ItemStockDTO> items) {
+        log.info("Descontando stock de {} juego(s)", items.size());
+
+        // 1) Validar TODO antes de modificar nada (mensajes claros: 404 o 409)
+        for (ItemStockDTO item : items) {
+            Juego juego = juegoRepository.findById(item.getJuegoId())
+                    .orElseThrow(() -> new JuegoNoEncontradoException(item.getJuegoId()));
+            if (juego.getStock() < item.getCantidad()) {
+                log.warn("Stock insuficiente para '{}': quedan {}, se pidieron {}",
+                        juego.getTitulo(), juego.getStock(), item.getCantidad());
+                throw new StockInsuficienteException(juego.getTitulo(), juego.getStock(), item.getCantidad());
+            }
+        }
+
+        // 2) Descontar. El UPDATE vuelve a revisar el stock por si otra compra entró entre medio.
+        for (ItemStockDTO item : items) {
+            int filas = juegoRepository.descontarStock(item.getJuegoId(), item.getCantidad());
+            if (filas == 0) {
+                Juego juego = juegoRepository.findById(item.getJuegoId())
+                        .orElseThrow(() -> new JuegoNoEncontradoException(item.getJuegoId()));
+                throw new StockInsuficienteException(juego.getTitulo(), juego.getStock(), item.getCantidad());
+            }
+        }
+        log.info("Stock descontado correctamente");
     }
 
     /* public List<JuegoDTO> buscarPorGeneroYPresupuesto(String genero, double precioMaximo) {
