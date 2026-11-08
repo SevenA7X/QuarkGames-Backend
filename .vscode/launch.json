@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CarritoApplication",
+            "request": "launch",
+            "mainClass": "com.proyectofs1.carrito.CarritoApplication",
+            "projectName": "carrito"
+        },
+        {
+            "type": "java",
             "name": "AuthApplication",
             "request": "launch",
             "mainClass": "com.proyectofs1.auth.AuthApplication",

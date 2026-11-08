@@ -15,7 +15,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/api/v1/categorias")
-@CrossOrigin(origins = "*") // Previene el error CORS al consultar desde la interfaz de Swagger
 @Tag(name = "2. Gestión de Categorías", description = "Endpoints para administrar las categorías y géneros a los que pertenecen los videojuegos.")
 public class CategoriaController {
 
