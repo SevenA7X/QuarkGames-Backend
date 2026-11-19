@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<!-- POM PADRE del backend de Quark Games (mismo enfoque que backend/pom.xml de la guía GameTech).
+	     - Hereda de Spring Boot: todos los microservicios usan la MISMA versión.
+	     - Lista los microservicios como módulos: desde esta carpeta, "./mvnw verify"
+	       compila y prueba los cuatro con un solo comando.
+	     - Centraliza las versiones compartidas (Java, Spring Cloud, JJWT). -->
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.3.5</version>
+		<relativePath/>
+	</parent>
+
+	<groupId>com.proyectofs1</groupId>
+	<artifactId>quarkgames-backend</artifactId>
+	<version>1.0.0</version>
+	<packaging>pom</packaging>
+	<name>quarkgames-backend</name>
+	<description>Backend de Quark Games: API Gateway y microservicios de catálogo, carrito y autenticación</description>
+
+	<properties>
+		<java.version>21</java.version>
+		<spring-cloud.version>2023.0.3</spring-cloud.version>
+		<jjwt.version>0.12.6</jjwt.version>
+	</properties>
+
+	<!-- El orden no importa: Maven calcula el orden de construcción según las dependencias -->
+	<modules>
+		<module>catalogo</module>
+		<module>carrito</module>
+		<module>auth</module>
+		<module>api-gateway</module>
+	</modules>
+
+	<!-- Versiones de Spring Cloud (Gateway y OpenFeign) para todos los módulos que las usen -->
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+</project>
