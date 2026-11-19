@@ -1,36 +1,28 @@
 server:
-  port: 8080
+  port: ${PORT:8080}
 
 spring:
   application:
     name: api-gateway
-  cloud:
-    gateway:
-      globalcors:
-        corsConfigurations:
-          '[/**]':
-            allowedOrigins: "http://localhost:5173" 
-            allowedMethods:
-              - GET
-              - POST
-              - PUT
-              - DELETE
-              - OPTIONS
-            allowedHeaders: "*"
-      routes:
-        
-        - id: catalogo-service
-          uri: http://localhost:8081
-          predicates:
-            - Path=/api/v1/juegos/**, /api/v1/categorias/**
-        
-       
-        - id: carrito-service
-          uri: http://localhost:8082
-          predicates:
-            - Path=/api/v1/carrito/**
-            
-        - id: auth-service
-          uri: http://localhost:8083
-          predicates:
-            - Path=/api/v1/auth/**
+
+# Las rutas y la política CORS están en RoutesConfig.java (configuración en Java).
+# Aquí solo quedan las direcciones de cada microservicio, que se pueden cambiar
+# con variables de entorno sin tocar el código.
+app:
+  catalogo-url: ${CATALOGO_URL:http://localhost:8081}
+  carrito-url: ${CARRITO_URL:http://localhost:8082}
+  auth-url: ${AUTH_URL:http://localhost:8083}
+  allowed-origins: ${FRONTEND_ORIGINS:http://localhost:5173,http://127.0.0.1:5173}
+
+# Swagger unificado: http://localhost:8080/swagger-ui.html
+# El selector de arriba a la derecha permite elegir el microservicio.
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    urls:
+      - name: Catálogo de juegos
+        url: /openapi/catalogo
+      - name: Carrito de compras
+        url: /openapi/carrito
+      - name: Autenticación
+        url: /openapi/auth
