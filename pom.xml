@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<!-- POM PADRE del backend de Quark Games (mismo enfoque que backend/pom.xml de la guía GameTech).
+	<!-- POM PADRE del backend de Quark Games.
 	     - Hereda de Spring Boot: todos los microservicios usan la MISMA versión.
 	     - Lista los microservicios como módulos: desde esta carpeta, "./mvnw verify"
 	       compila y prueba los cuatro con un solo comando.

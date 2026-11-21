@@ -46,6 +46,8 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/error").permitAll()
+                // Healthcheck de Docker Compose (solo expone {"status":"UP"})
+                .requestMatchers("/actuator/health").permitAll()
                 // Endpoint interno para el MS Carrito: lo protege X-Internal-Key, no el JWT
                 .requestMatchers("/internal/**").permitAll()
                 // Lectura pública de la tienda

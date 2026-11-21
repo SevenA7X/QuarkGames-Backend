@@ -12,7 +12,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
-// Configuración del API Gateway en Java (mismo enfoque que RoutesConfig de la guía GameTech).
+// Configuración del API Gateway en Java.
 // React conoce una sola URL base: http://localhost:8080/api/v1. Según el camino de la petición,
 // el Gateway elige el microservicio de destino y le reenvía la solicitud SIN cambiar la ruta.
 //   GET http://localhost:8080/api/v1/juegos/5  ->  http://localhost:8081/api/v1/juegos/5

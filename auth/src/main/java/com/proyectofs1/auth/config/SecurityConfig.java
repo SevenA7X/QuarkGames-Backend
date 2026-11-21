@@ -45,6 +45,8 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/v1/auth/login").permitAll()
                 .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                // Healthcheck de Docker Compose (solo expone {"status":"UP"})
+                .requestMatchers("/actuator/health").permitAll()
                 // Página de error de Spring: sin esto un 400/500 se convertiría en 401
                 .requestMatchers("/error").permitAll()
                 // Todo lo demás exige token de un ADMIN

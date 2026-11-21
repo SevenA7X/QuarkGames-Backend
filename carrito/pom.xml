@@ -30,7 +30,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
-
+		<!-- /actuator/health: lo usan los healthcheck de Docker Compose -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
 		<!-- OpenFeign: cliente REST declarativo para llamar al MS Catálogo -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
