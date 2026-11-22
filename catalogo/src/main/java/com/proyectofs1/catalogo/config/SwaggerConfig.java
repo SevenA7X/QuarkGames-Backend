@@ -5,9 +5,11 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 
 @Configuration
 public class SwaggerConfig {
@@ -15,7 +17,9 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
-                .info(new Info()
+        // URL relativa: Swagger usa el mismo host y protocolo de la página (https en EC2, http en local)
+        .addServersItem(new Server().url("/"))
+            .info(new Info()
                 .title("API Catálogo de Juegos")
                 .version("1.0")
                 .description("Documentación de la API para la gestión del catálogo de videojuegos y categorías."
