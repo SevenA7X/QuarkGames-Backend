@@ -176,6 +176,7 @@ services:
     restart: unless-stopped
     environment:
       PORT: '8080'
+      SERVER_FORWARD_HEADERS_STRATEGY: framework   # confía en X-Forwarded-Proto/Host que envía Caddy
       CATALOGO_URL: http://catalogo:8081
       CARRITO_URL: http://carrito:8082
       AUTH_URL: http://auth:8083
